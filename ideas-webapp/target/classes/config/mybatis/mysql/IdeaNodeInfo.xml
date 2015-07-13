@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="IdeaNodeInfo">
+    <resultMap id="ideaNodeInfo" type="com.sfbm.ideas.services.common.IdeaNodeInfo">
+        <result property="nodeId" column="node_id" />
+        <result property="ideaId" column="idea_id" />
+        <result property="nodeContent" column="node_content" />
+        <result property="nodeColor" column="node_color" />
+        <result property="parentNodeId" column="parent_node_id" />
+        <result property="instruction" column="instruction" />
+        <result property="linkUrl" column="link_url" />
+        <result property="picUrl" column="pic_url" />
+        <result property="icon" column="icon" />
+        <result property="createTime" column="create_time" />
+        <result property="status" column="status" />
+    </resultMap>
+
+    <insert id="insertIdeaNodeInfo" parameterType="ideaNodeInfo">
+        INSERT INTO idea_node_info (node_id, idea_id, node_content, node_color, parent_node_id, instruction, link_url, pic_url, icon, create_time, status)
+        VALUE (#{nodeId}, #{ideaId}, #{nodeContent}, #{nodeColor}, #{parentNodeId}, #{instruction}, #{linkUrl}, #{picUrl}, #{icon}, DATE_FORMAT(#{createTime}, '%Y-%m-%d %H:%i:%s'), #{status})
+        <selectKey keyProperty="nodeId" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <update id="updateIdeaNodeInfo" parameterType="ideaNodeInfo">
+        UPDATE idea_node_info
+        SET
+            idea_id = #{ideaId},
+            node_content = #{nodeContent},
+            node_color = #{nodeColor},
+            parent_node_id = #{parentNodeId},
+            instruction = #{instruction},
+            link_url = #{linkUrl},
+            pic_url = #{picUrl},
+            icon = #{icon},
+            create_time = DATE_FORMAT(#{createTime}, '%Y-%m-%d %H:%i:%s'),
+            status = #{status}
+        WHERE node_id = #{nodeId}
+    </update>
+
+    <select id="queryIdeaNodeInfoByNodeId" parameterType="long" resultMap="ideaNodeInfo">
+        SELECT
+            node_id,
+            idea_id,
+            node_content,
+            node_color,
+            parent_node_id,
+            instruction,
+            link_url,
+            pic_url,
+            icon,
+            create_time,
+            status
+        FROM idea_node_info
+        WHERE node_id = #{value}
+    </select>
+
+    <select id="queryIdeaNodeInfoByIdeaId" parameterType="long" resultMap="ideaNodeInfo">
+        SELECT
+            node_id,
+            idea_id,
+            node_content,
+            node_color,
+            parent_node_id,
+            instruction,
+            link_url,
+            pic_url,
+            icon,
+            create_time,
+            status
+        FROM idea_node_info
+        WHERE idea_id = #{value}
+    </select>
+
+</mapper>

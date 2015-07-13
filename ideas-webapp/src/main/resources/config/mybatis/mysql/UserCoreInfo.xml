@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="UserCoreInfo">
+    <resultMap id="userCoreInfo" type="com.sfbm.ideas.services.common.UserCoreInfo">
+        <result property="userId" column="user_id" />
+        <result property="mobile" column="mobile" />
+        <result property="email" column="email" />
+        <result property="password" column="password" />
+        <result property="createTime" column="create_time" />
+        <result property="status" column="status" />
+    </resultMap>
+
+    <insert id="insertUserCoreInfo" parameterType="userCoreInfo">
+        INSERT INTO user_core_info (user_id, mobile, email, password, create_time, status)
+        VALUE (#{userId}, #{mobile}, #{email}, #{password}, DATE_FORMAT(#{createTime}, '%Y-%m-%d %H:%i:%s'), #{status})
+        <selectKey keyProperty="userId" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <update id="updateUserCoreInfo" parameterType="userCoreInfo">
+        UPDATE user_core_info
+        SET
+            mobile = #{mobile},
+            email = #{email},
+            password = #{password},
+            create_time = DATE_FORMAT(#{createTime}, '%Y-%m-%d %H:%i:%s'),
+            status = #{status}
+        WHERE user_id = #{userId}
+    </update>
+
+    <select id="queryUserCoreInfoByUserId" parameterType="long" resultMap="userCoreInfo">
+        SELECT
+            user_id,
+            mobile,
+            email,
+            password,
+            create_time,
+            status
+        FROM user_core_info
+        WHERE user_id = #{value}
+    </select>
+
+    <select id="queryUserCoreInfoByEmail" parameterType="string" resultMap="userCoreInfo">
+        SELECT
+            user_id,
+            mobile,
+            email,
+            password,
+            create_time,
+            status
+        FROM user_core_info
+        WHERE email = #{value}
+    </select>
+
+    <select id="queryUserCoreInfoByMobile" parameterType="long" resultMap="userCoreInfo">
+        SELECT
+            user_id,
+            mobile,
+            email,
+            password,
+            create_time,
+            status
+        FROM user_core_info
+        WHERE mobile = #{value}
+    </select>
+
+    <select id="queryCountUserCoreInfoByEmail" parameterType="string" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM user_core_info
+        WHERE email = #{value}
+    </select>
+
+    <select id="queryCountUserCoreInfoByMobile" parameterType="long" resultType="int">
+        SELECT
+          COUNT(*)
+        FROM user_core_info
+        WHERE mobile = #{value}
+    </select>
+
+</mapper>

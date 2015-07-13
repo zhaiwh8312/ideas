@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="IdeaInfo">
+    <resultMap id="ideaInfo" type="com.sfbm.ideas.services.common.IdeaInfo">
+        <result property="ideaId" column="idea_id" />
+        <result property="userId" column="user_id" />
+        <result property="ideaName" column="idea_name" />
+        <result property="ideaPicUrl" column="idea_pic_url" />
+        <result property="isPublic" column="is_public" />
+        <result property="createTime" column="create_time" />
+        <result property="status" column="status" />
+    </resultMap>
+
+    <insert id="insertIdeaInfo" parameterType="ideaInfo">
+        INSERT INTO idea_info (idea_id, user_id, idea_name, idea_pic_url, is_public, create_time, status)
+        VALUE (#{ideaId}, #{userId}, #{ideaName}, #{ideaPicUrl}, #{isPublic}, DATE_FORMAT(#{createTime}, '%Y-%m-%d %H:%i:%s'), #{status})
+        <selectKey keyProperty="ideaId" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <update id="updateIdeaInfo" parameterType="ideaInfo">
+        UPDATE idea_info
+        SET
+            user_id = #{userId},
+            idea_name = #{ideaName},
+            idea_pic_url = #{ideaPicUrl},
+            is_public = #{isPublic},
+            create_time = DATE_FORMAT(#{createTime}, '%Y-%m-%d %H:%i:%s'),
+            status = #{status}
+        WHERE idea_id = #{ideaId}
+    </update>
+
+    <select id="queryIdeaInfoByIdeaId" parameterType="long" resultMap="ideaInfo">
+        SELECT
+            idea_id,
+            user_id,
+            idea_name,
+            idea_pic_url,
+            is_public,
+            create_time,
+            status
+        FROM idea_info
+        WHERE idea_id = #{value}
+    </select>
+
+    <select id="queryIdeaInfoListByUserId" parameterType="long" resultMap="ideaInfo">
+        SELECT
+            idea_id,
+            user_id,
+            idea_name,
+            idea_pic_url,
+            is_public,
+            create_time,
+            status
+        FROM idea_info
+        WHERE user_id = #{value}
+    </select>
+
+    <select id="queryIdeaInfoList" resultMap="ideaInfo">
+        SELECT
+            idea_id,
+            user_id,
+            idea_name,
+            idea_pic_url,
+            is_public,
+            create_time,
+            status
+        FROM idea_info
+    </select>
+
+    <select id="queryIdeaInfoListIsPublic" resultMap="ideaInfo">
+        SELECT
+            idea_id,
+            user_id,
+            idea_name,
+            idea_pic_url,
+            is_public,
+            create_time,
+            status
+        FROM idea_info
+        WHERE is_public = 1
+    </select>
+
+</mapper>
