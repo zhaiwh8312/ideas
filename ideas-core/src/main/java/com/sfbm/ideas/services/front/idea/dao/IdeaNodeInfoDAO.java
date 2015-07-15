@@ -18,4 +18,5 @@ public interface IdeaNodeInfoDAO {
 
     public List<IdeaNodeInfo> queryIdeaNodeInfoByIdeaId(long ideaId) throws Exception;
 
+    public int queryCountIdeaNodeInfoByIdeaId(long ideaId) throws Exception;
 }

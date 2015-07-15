@@ -22,4 +22,6 @@ public interface IdeaInfoDAO {
 
     public List<IdeaInfo> queryIdeaInfoListIsPublic() throws Exception;
 
+    public List<IdeaInfo> queryIdeaInfoListIsPublic(int offset, int limit) throws Exception;
+
 }

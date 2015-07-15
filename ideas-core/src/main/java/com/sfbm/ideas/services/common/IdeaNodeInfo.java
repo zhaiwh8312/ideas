@@ -18,6 +18,8 @@ public class IdeaNodeInfo implements Serializable {
     private String linkUrl;
     private String picUrl;
     private String icon;
+    private int xLocation;
+    private int yLocation;
     private Date createTime;
     private String status;
 
@@ -91,6 +93,22 @@ public class IdeaNodeInfo implements Serializable {
 
     public void setIcon(String icon) {
         this.icon = icon;
+    }
+
+    public int getxLocation() {
+        return xLocation;
+    }
+
+    public void setxLocation(int xLocation) {
+        this.xLocation = xLocation;
+    }
+
+    public int getyLocation() {
+        return yLocation;
+    }
+
+    public void setyLocation(int yLocation) {
+        this.yLocation = yLocation;
     }
 
     public Date getCreateTime() {

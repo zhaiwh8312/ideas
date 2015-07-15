@@ -47,7 +47,7 @@ public class MyIdeasController {
             e.printStackTrace();
         }
 
-        mav.setViewName("views/ideas/index.jsp");
+        mav.setViewName("views/ideas/my/index.jsp");
         mav.addObject("ideaInfoList", ideaInfoList);
 
         return mav;

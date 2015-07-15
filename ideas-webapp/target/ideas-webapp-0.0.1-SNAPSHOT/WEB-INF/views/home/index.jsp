@@ -24,6 +24,7 @@
         <meta name="mobile-web-app-capable" content="yes">
 
         <link href="<%=request.getContextPath()%>/resource/bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet"/>
+        <link href="<%=request.getContextPath()%>/resource/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet"/>
 
         <style type="text/css">
             #signupForm label.error {
@@ -45,76 +46,14 @@
             <div class="row row-offcanvas row-offcanvas-right">
 
                 <div class="col-xs-12 col-sm-9">
-                    <p class="pull-right visible-xs">
-                        <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
-                    </p>
                     <div class="jumbotron">
                         <h1>Hello, ideas!</h1>
 
                         <p>This is an example to show the potential of an offcanvas layout pattern in Bootstrap. Try some
                             responsive-range viewport sizes to see it in action.</p>
                     </div>
-                    <div class="row">
-                        <div class="col-xs-6 col-lg-4">
-                            <h2>Heading</h2>
+                    <div id="ideas_div" class="row" style="text-align: center;">
 
-                            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo,
-                                tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem
-                                malesuada magna mollis euismod. Donec sed odio dui. </p>
-
-                            <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-                        </div>
-                        <!--/.col-xs-6.col-lg-4-->
-                        <div class="col-xs-6 col-lg-4">
-                            <h2>Heading</h2>
-
-                            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo,
-                                tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem
-                                malesuada magna mollis euismod. Donec sed odio dui. </p>
-
-                            <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-                        </div>
-                        <!--/.col-xs-6.col-lg-4-->
-                        <div class="col-xs-6 col-lg-4">
-                            <h2>Heading</h2>
-
-                            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo,
-                                tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem
-                                malesuada magna mollis euismod. Donec sed odio dui. </p>
-
-                            <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-                        </div>
-                        <!--/.col-xs-6.col-lg-4-->
-                        <div class="col-xs-6 col-lg-4">
-                            <h2>Heading</h2>
-
-                            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo,
-                                tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem
-                                malesuada magna mollis euismod. Donec sed odio dui. </p>
-
-                            <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-                        </div>
-                        <!--/.col-xs-6.col-lg-4-->
-                        <div class="col-xs-6 col-lg-4">
-                            <h2>Heading</h2>
-
-                            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo,
-                                tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem
-                                malesuada magna mollis euismod. Donec sed odio dui. </p>
-
-                            <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-                        </div>
-                        <!--/.col-xs-6.col-lg-4-->
-                        <div class="col-xs-6 col-lg-4">
-                            <h2>Heading</h2>
-
-                            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo,
-                                tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem
-                                malesuada magna mollis euismod. Donec sed odio dui. </p>
-
-                            <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-                        </div>
-                        <!--/.col-xs-6.col-lg-4-->
                     </div>
                     <!--/row-->
                 </div>
@@ -178,9 +117,12 @@
     <script src="<%=request.getContextPath()%>/resource/validate/jquery.validate.js" type="text/javascript"></script>
     <script src="<%=request.getContextPath()%>/resource/validate/additional-methods.min.js" type="text/javascript"></script>
     <script src="<%=request.getContextPath()%>/resource/validate/localization/messages_zh.min.js" type="text/javascript"></script>
+    <script src="<%=request.getContextPath()%>/resource/js/jquery.lazyload.min.js" type="text/javascript"></script>
 
     <script type="text/javascript">
         $(document).ready(function(){
+            initIdeasList();
+
             $("#signupForm").validate({
                 onfocusout: function(element) { $(element).valid(); }
             });
@@ -245,6 +187,44 @@
 
                         $("#modal_msg").modal("show");
                     }
+                },
+                timeout:30000,
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                }
+            });
+        }
+
+        function initIdeasList() {
+            $.ajax({
+                url: "<%=request.getContextPath() %>/idea/public_list.json",  //这里是网址
+                type: "POST",
+                data:{
+                    offset : 0,
+                    limit : 10
+                },
+                dataType: "json",
+                async: true,
+                success:function(data){
+                    var str = "";
+
+                    for(var i = 0; i < data.length; i++){
+                        var idea = data[i];
+
+                        str += '<div class="col-xs-6 col-lg-4" style="padding-top: 20px">';
+                        if (idea.ideaPicUrl == "" || idea.ideaPicUrl == null) {
+                            str += '<p><img class="img-circle" src="<%=request.getContextPath()%>/resource/images/ideas.jpg" alt="" title="点击进入" width="140" height="140" style="cursor: pointer" onclick="javascript:window.location.href=\'<%=request.getContextPath()%>/idea/'+idea.ideaId+'.html\'" ></p>';
+                        } else {
+                            str += '<p><img class="img-circle" src="'+idea.ideaPicUrl+'" alt="" title="点击进入" width="140" height="140" style="cursor: pointer" onclick="javascript:window.location.href=\'<%=request.getContextPath()%>/idea/'+idea.ideaId+'.html\'"></p>';
+                        }
+                        str += '<h2 class="text-primary">'+idea.ideaName+'</h2>';
+                        str += '<p class="text-primary">公开</p>';
+                        str += '<p>共50个节点</p>';
+                        str += '</div>';
+                    }
+
+                    $("#ideas_div").html(str);
+
+                    $("img.img-circle").lazyload();
                 },
                 timeout:30000,
                 error: function (XMLHttpRequest, textStatus, errorThrown) {

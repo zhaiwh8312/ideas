@@ -32,4 +32,9 @@ public class IdeaNodeInfoDAOImpl extends BaseDAO implements IdeaNodeInfoDAO {
     public List<IdeaNodeInfo> queryIdeaNodeInfoByIdeaId(long ideaId) throws Exception {
         return getSqlSession().selectList("IdeaNodeInfo.queryIdeaNodeInfoByIdeaId", ideaId);
     }
+
+    @Override
+    public int queryCountIdeaNodeInfoByIdeaId(long ideaId) throws Exception {
+        return getSqlSession().selectOne("IdeaNodeInfo.queryCountIdeaNodeInfoByIdeaId", ideaId);
+    }
 }

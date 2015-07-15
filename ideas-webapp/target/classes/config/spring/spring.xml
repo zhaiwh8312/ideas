@@ -6,4 +6,5 @@
 
 	<import resource="classpath:/config/spring/spring-mvc.xml" />
 	<import resource="classpath:/config/spring/spring-database.xml" />
+	<import resource="classpath:/config/spring/spring-interceptors.xml" />
 </beans>

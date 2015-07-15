@@ -6,14 +6,12 @@ import com.sfbm.ideas.services.constant.SessionKey;
 import com.sfbm.ideas.services.front.idea.IdeaService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Copyright (c) 2015 ShiFenBianMin.Co.Ltd. All rights reserved.
@@ -25,7 +23,7 @@ public class IdeasController {
     @Resource
     private IdeaService ideaService;
 
-    @RequestMapping(value="/ideas/add.json", method = RequestMethod.POST)
+    @RequestMapping(value="/idea/add.json", method = RequestMethod.POST)
     public @ResponseBody long doAddIdea(HttpSession session, @RequestParam(required = true) String ideaName, String ideaPicUrl, boolean isPublic) {
         UserCoreInfo userCoreInfo = null;
 
@@ -48,7 +46,17 @@ public class IdeasController {
         }
     }
 
+    @RequestMapping(value="/idea/public_list.json", method = RequestMethod.POST)
+    public @ResponseBody List<IdeaInfo> doGetIdeaList(int offset, int limit) {
+        List<IdeaInfo> ideaInfoList = new ArrayList<IdeaInfo>();
 
+        try {
+            ideaInfoList = ideaService.getPublicIdeaInfoList(offset, limit);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+        return ideaInfoList;
+    }
 
 }

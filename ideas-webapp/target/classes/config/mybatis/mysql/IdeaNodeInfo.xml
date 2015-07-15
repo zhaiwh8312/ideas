@@ -14,13 +14,15 @@
         <result property="linkUrl" column="link_url" />
         <result property="picUrl" column="pic_url" />
         <result property="icon" column="icon" />
+        <result property="xLocation" column="x_location" />
+        <result property="yLocation" column="y_location" />
         <result property="createTime" column="create_time" />
         <result property="status" column="status" />
     </resultMap>
 
     <insert id="insertIdeaNodeInfo" parameterType="ideaNodeInfo">
-        INSERT INTO idea_node_info (node_id, idea_id, node_content, node_color, parent_node_id, instruction, link_url, pic_url, icon, create_time, status)
-        VALUE (#{nodeId}, #{ideaId}, #{nodeContent}, #{nodeColor}, #{parentNodeId}, #{instruction}, #{linkUrl}, #{picUrl}, #{icon}, DATE_FORMAT(#{createTime}, '%Y-%m-%d %H:%i:%s'), #{status})
+        INSERT INTO idea_node_info (node_id, idea_id, node_content, node_color, parent_node_id, instruction, link_url, pic_url, icon, x_location, y_location, create_time, status)
+        VALUE (#{nodeId}, #{ideaId}, #{nodeContent}, #{nodeColor}, #{parentNodeId}, #{instruction}, #{linkUrl}, #{picUrl}, #{icon}, #{xLocation}, #{yLocation}, DATE_FORMAT(#{createTime}, '%Y-%m-%d %H:%i:%s'), #{status})
         <selectKey keyProperty="nodeId" resultType="int" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
@@ -37,6 +39,8 @@
             link_url = #{linkUrl},
             pic_url = #{picUrl},
             icon = #{icon},
+            x_location = #{xLocation},
+            y_location = #{yLocation},
             create_time = DATE_FORMAT(#{createTime}, '%Y-%m-%d %H:%i:%s'),
             status = #{status}
         WHERE node_id = #{nodeId}
@@ -53,6 +57,8 @@
             link_url,
             pic_url,
             icon,
+            x_location,
+            y_location,
             create_time,
             status
         FROM idea_node_info
@@ -70,8 +76,17 @@
             link_url,
             pic_url,
             icon,
+            x_location,
+            y_location,
             create_time,
             status
+        FROM idea_node_info
+        WHERE idea_id = #{value}
+    </select>
+
+    <select id="queryCountIdeaNodeInfoByIdeaId" parameterType="long" resultType="int">
+        SELECT
+            COUNT(*)
         FROM idea_node_info
         WHERE idea_id = #{value}
     </select>

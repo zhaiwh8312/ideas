@@ -3,6 +3,7 @@ package com.sfbm.ideas.services.front.idea.dao.impl;
 import com.sfbm.ideas.core.dao.BaseDAO;
 import com.sfbm.ideas.services.common.IdeaInfo;
 import com.sfbm.ideas.services.front.idea.dao.IdeaInfoDAO;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -41,5 +42,10 @@ public class IdeaInfoDAOImpl extends BaseDAO implements IdeaInfoDAO {
     @Override
     public List<IdeaInfo> queryIdeaInfoListIsPublic() throws Exception {
         return getSqlSession().selectList("IdeaInfo.queryIdeaInfoListIsPublic");
+    }
+
+    @Override
+    public List<IdeaInfo> queryIdeaInfoListIsPublic(int offset, int limit) throws Exception {
+        return getSqlSession().selectList("IdeaInfo.queryIdeaInfoListIsPublic", null, new RowBounds(offset, limit));
     }
 }

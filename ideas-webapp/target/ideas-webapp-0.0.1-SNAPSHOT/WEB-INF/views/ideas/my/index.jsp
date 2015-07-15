@@ -48,39 +48,67 @@
         <div class="row row-offcanvas row-offcanvas-right">
 
             <div class="col-xs-12 col-sm-12">
-                <%--<p class="pull-right visible-xs">--%>
-                    <%--<button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>--%>
-                <%--</p>--%>
                 <div class="row" style="text-align: center;">
                     <c:forEach items="${ideaInfoList}" var="ideaInfo" varStatus="s">
                         <div class="col-xs-6 col-lg-4" style="padding-top: 20px">
-                            <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="140" height="140">
+                            <c:choose>
+                                <c:when test="${ideaInfo.ideaPicUrl == '' || null == ideaInfo.ideaPicUrl}">
+                                    <img class="img-circle" src="<%=request.getContextPath()%>/resource/images/ideas.jpg"
+                                         alt="" title="点击进入" width="140" height="140" style="cursor: pointer" onclick="javascript:window.location.href='<%=request.getContextPath()%>/idea/${ideaInfo.ideaId}.html'">
+                                </c:when>
+                                <c:otherwise>
+                                    <img class="img-circle" src="${ideaInfo.ideaPicUrl}"
+                                         alt="" title="点击进入" width="140" height="140" style="cursor: pointer" onclick="javascript:window.location.href='<%=request.getContextPath()%>/idea/${ideaInfo.ideaId}.html'">
+                                </c:otherwise>
+                            </c:choose>
 
-                            <h2>${ideaInfo.ideaName}</h2>
+                            <h2 class="text-primary">${ideaInfo.ideaName}</h2>
+
+                            <c:choose>
+                                <c:when test="${ideaInfo.isPublic == true}">
+                                    <p class="text-primary">公开</p>
+                                </c:when>
+                                <c:otherwise>
+                                    <p class="text-danger">私人</p>
+                                </c:otherwise>
+                            </c:choose>
+
+                            <p>共50个节点</p>
 
                             <p>
-                                <c:choose>
-                                    <c:when test="${ideaInfo.isPublic == true}">
-                                        公开
-                                    </c:when>
-                                    <c:otherwise>
-                                        私人
-                                    </c:otherwise>
-                                </c:choose>
+                                <div class="row">
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-info" title="编辑">
+                                            <i class="fa fa-pencil"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-danger" title="删除">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </div>
+                                    <%--<div class="col-xs-3">--%>
+                                        <%--<button class="btn btn-success btn-block" type="button">--%>
+                                            <%--<i class="fa fa-pencil"></i>--%>
+                                        <%--</button>--%>
+                                    <%--</div>--%>
+                                    <%--<div class="col-xs-3">--%>
+                                        <%--<button class="btn btn-warning btn-block" type="button" onclick="doRest()">--%>
+                                            <%--<i class="fa fa-reply"></i>&nbsp;&nbsp;重 置--%>
+                                        <%--</button>--%>
+                                    <%--</div>--%>
+                                </div>
                             </p>
 
-                            <p><a class="btn btn-default" href="#" role="button">查看详情 &raquo;</a></p>
                         </div>
                         <!--/.col-xs-6.col-lg-4-->
                     </c:forEach>
 
                     <div class="col-xs-6 col-lg-4" style="padding-top: 20px">
-                        <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="140" height="140"
+                        <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="" title="点击进入" width="140" height="140" style="cursor: pointer"
                                 onclick="doAddInit()"/>
 
-                        <h2>创建一个idea</h2>
+                        <h2 class="text-info">创建一个idea</h2>
 
-                        <p>留下你转瞬即逝的好点子</p>
+                        <p class="text-success">留下你转瞬即逝的好点子</p>
 
                         <p><a class="btn btn-default" href="javascript:;" role="button" onclick="doAddInit()">创建idea &raquo;</a></p>
 
@@ -140,20 +168,17 @@
     <script src="<%=request.getContextPath()%>/resource/validate/jquery.validate.js" type="text/javascript"></script>
     <script src="<%=request.getContextPath()%>/resource/validate/additional-methods.min.js" type="text/javascript"></script>
     <script src="<%=request.getContextPath()%>/resource/validate/localization/messages_zh.min.js" type="text/javascript"></script>
+    <script src="<%=request.getContextPath()%>/resource/js/jquery.lazyload.min.js" type="text/javascript"></script>
 
     <script type="text/javascript">
         $(document).ready(function () {
+            $("img.img-circle").lazyload();
+
             $("[name='isPublic']").bootstrapSwitch();
 
             $("#addForm").validate({
                 onfocusout: function(element) { $(element).valid(); }
             });
-
-//            $("[name='isPublic']").on('switchChange.bootstrapSwitch', function(event, state) {
-//                console.log(this); // DOM element
-//                console.log(event); // jQuery event
-//                console.log(state); // true | false
-//            });
         });
 
         function doRest() {
@@ -172,7 +197,7 @@
             }
 
             $.ajax({
-                url: "<%=request.getContextPath() %>/ideas/add.json",  //这里是网址
+                url: "<%=request.getContextPath() %>/idea/add.json",  //这里是网址
                 type: "POST",
                 data:{
                     ideaName : $("#input_idea_name").val(),
@@ -188,7 +213,7 @@
 //                        $("#modal_msg").modal("show");
                     } else {
                         // 新增成功
-                        window.location.reload();
+                        window.location.href = "<%=request.getContextPath()%>/idea/"+data+".html";
                     }
                 },
                 timeout:30000,

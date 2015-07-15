@@ -51,7 +51,15 @@ public class SigninController {
         } else {
             session.setAttribute(SessionKey.USER, userCoreInfo);
 
-            mav.setViewName("redirect:/index.html");
+            if (null != session.getAttribute(SessionKey.CLIENT_REQ_URL)) {
+                String clientReqUrl = session.getAttribute(SessionKey.CLIENT_REQ_URL).toString();
+
+                session.removeAttribute(SessionKey.CLIENT_REQ_URL);
+
+                mav.setViewName("redirect:" + clientReqUrl);
+            } else {
+                mav.setViewName("redirect:/myideas/index.html");
+            }
         }
 
         return mav;
