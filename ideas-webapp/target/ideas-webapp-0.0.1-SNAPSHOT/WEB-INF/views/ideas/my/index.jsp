@@ -108,7 +108,7 @@
 
                         <h2 class="text-info">创建一个idea</h2>
 
-                        <p class="text-success">留下你转瞬即逝的好点子</p>
+                        <p class="text-success">create</p>
 
                         <p><a class="btn btn-default" href="javascript:;" role="button" onclick="doAddInit()">创建idea &raquo;</a></p>
 
@@ -188,7 +188,7 @@
         function doAddInit() {
             $("#addForm")[0].reset();
 
-            $("#modal_add_idea").modal("show");
+            $("#modal_add_idea").modal({backdrop: "static", show: true});
         }
 
         function doAddIdea() {
