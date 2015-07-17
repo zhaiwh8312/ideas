@@ -121,7 +121,7 @@
         </div>
         <!--/row-->
 
-        <div id="modal_add_idea" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div id="modal_add_idea" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
             <div class="modal-dialog modal-sm">
                 <div class="modal-content">
                     <div class="modal-header">

@@ -82,6 +82,27 @@
             status
         FROM idea_node_info
         WHERE idea_id = #{value}
+        AND status = '1'
+    </select>
+
+    <select id="queryIdeaNodeInfoByParentId" parameterType="long" resultMap="ideaNodeInfo">
+        SELECT
+            node_id,
+            idea_id,
+            node_content,
+            node_color,
+            parent_node_id,
+            instruction,
+            link_url,
+            pic_url,
+            icon,
+            x_location,
+            y_location,
+            create_time,
+            status
+        FROM idea_node_info
+        WHERE parent_node_id = #{value}
+        AND status = '1'
     </select>
 
     <select id="queryCountIdeaNodeInfoByIdeaId" parameterType="long" resultType="int">
@@ -89,6 +110,7 @@
             COUNT(*)
         FROM idea_node_info
         WHERE idea_id = #{value}
+        AND status = '1'
     </select>
 
 </mapper>

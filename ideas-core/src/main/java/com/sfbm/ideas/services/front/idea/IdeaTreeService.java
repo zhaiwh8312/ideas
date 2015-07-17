@@ -10,9 +10,11 @@ import java.util.List;
  */
 public interface IdeaTreeService {
 
-    public IdeaNodeInfo saveIdeaNodeInfo(long userId, long ideaId, long parentId, String nodeContent, int xLocation, int yLocation) throws Exception;
+    public IdeaNodeInfo saveIdeaNodeInfo(long userId, long ideaId, long parentId, String nodeContent, int xLocation, int yLocation, String nodeColor, String instruction, String linkUrl, String icon) throws Exception;
 
     public List<IdeaNodeInfo> getIdeaTreeByIdeaId(long ideaId) throws Exception;
 
     public IdeaNodeInfo modifyIdeaNodeInfoForLocation(long userId, long nodeId, int xLocation, int yLocation) throws Exception;
+
+    public IdeaNodeInfo deleteIdeaNodeInfo(long userId, long nodeId) throws Exception;
 }

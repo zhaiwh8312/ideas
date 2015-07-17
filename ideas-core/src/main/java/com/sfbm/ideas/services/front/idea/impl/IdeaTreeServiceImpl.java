@@ -25,7 +25,7 @@ public class IdeaTreeServiceImpl implements IdeaTreeService {
     private IdeaNodeInfoDAO ideaNodeInfoDAO;
 
     @Override
-    public IdeaNodeInfo saveIdeaNodeInfo(long userId, long ideaId, long parentId, String nodeContent, int xLocation, int yLocation) throws Exception {
+    public IdeaNodeInfo saveIdeaNodeInfo(long userId, long ideaId, long parentId, String nodeContent, int xLocation, int yLocation, String nodeColor, String instruction, String linkUrl, String icon) throws Exception {
         IdeaInfo ideaInfo = ideaInfoDAO.queryIdeaInfoByIdeaId(ideaId);
 
         if (null == ideaInfo || ideaInfo.getUserId() != userId) {
@@ -45,6 +45,10 @@ public class IdeaTreeServiceImpl implements IdeaTreeService {
         ideaNodeInfo.setNodeContent(nodeContent);
         ideaNodeInfo.setxLocation(xLocation);
         ideaNodeInfo.setyLocation(yLocation);
+        ideaNodeInfo.setNodeColor(nodeColor);
+        ideaNodeInfo.setLinkUrl(linkUrl);
+        ideaNodeInfo.setInstruction(instruction);
+        ideaNodeInfo.setIcon(icon);
         ideaNodeInfo.setCreateTime(new Date());
         ideaNodeInfo.setStatus(NodeStatus.NORMAL.getName());
 
@@ -82,5 +86,45 @@ public class IdeaTreeServiceImpl implements IdeaTreeService {
         ideaNodeInfoDAO.updateIdeaNodeInfo(ideaNodeInfo);
 
         return ideaNodeInfo;
+    }
+
+    @Override
+    public IdeaNodeInfo deleteIdeaNodeInfo(long userId, long nodeId) throws Exception {
+        IdeaNodeInfo ideaNodeInfo = ideaNodeInfoDAO.queryIdeaNodeInfoByNodeId(nodeId);
+
+        if (null == ideaNodeInfo) {
+            return null;
+        }
+
+        IdeaInfo ideaInfo = ideaInfoDAO.queryIdeaInfoByIdeaId(ideaNodeInfo.getIdeaId());
+
+        if (null == ideaInfo || ideaInfo.getUserId() != userId) {
+            return null;
+        }
+
+        ideaNodeInfo.setStatus(NodeStatus.DELETE.getName());
+
+        ideaNodeInfoDAO.updateIdeaNodeInfo(ideaNodeInfo);
+
+        this.deleteChildrenNode(ideaNodeInfo);
+
+        return ideaNodeInfo;
+    }
+
+    /**
+     * 删除所有子一级节点
+     * @param nodeInfo
+     * @throws Exception
+     */
+    private void deleteChildrenNode(IdeaNodeInfo nodeInfo) throws Exception {
+        List<IdeaNodeInfo> childNodeList = ideaNodeInfoDAO.queryIdeaNodeInfoByParentId(nodeInfo.getNodeId());
+
+        for (IdeaNodeInfo childNode : childNodeList) {
+            childNode.setStatus(NodeStatus.DELETE.getName());
+
+            ideaNodeInfoDAO.updateIdeaNodeInfo(childNode);
+
+            this.deleteChildrenNode(childNode);
+        }
     }
 }

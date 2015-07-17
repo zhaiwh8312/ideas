@@ -62,13 +62,17 @@ public class IdeaTreeController {
                                                 @RequestParam(required = true) long ideaId,
                                                 @RequestParam(required = true) long parentId,
                                                 @RequestParam(required = true) int xLocation,
-                                                @RequestParam(required = true) int yLocation) {
+                                                @RequestParam(required = true) int yLocation,
+                                                String nodeColor,
+                                                String instruction,
+                                                String linkUrl,
+                                                String icon) {
         IdeaNodeInfo ideaNodeInfo = new IdeaNodeInfo();
 
         UserCoreInfo userCoreInfo = (UserCoreInfo)session.getAttribute(SessionKey.USER);
 
         try {
-            ideaNodeInfo = ideaTreeService.saveIdeaNodeInfo(userCoreInfo.getUserId(), ideaId, parentId, nodeContent, xLocation, yLocation);
+            ideaNodeInfo = ideaTreeService.saveIdeaNodeInfo(userCoreInfo.getUserId(), ideaId, parentId, nodeContent, xLocation, yLocation, nodeColor, instruction, linkUrl, icon);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -87,6 +91,21 @@ public class IdeaTreeController {
 
         try {
             ideaNodeInfo = ideaTreeService.modifyIdeaNodeInfoForLocation(userCoreInfo.getUserId(), nodeId, xLocation, yLocation);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return ideaNodeInfo;
+    }
+
+    @RequestMapping(value="/idea_node/delete/{nodeId}.json", method = RequestMethod.POST)
+    public @ResponseBody IdeaNodeInfo doDeleteNode(HttpSession session, @PathVariable long nodeId) {
+        IdeaNodeInfo ideaNodeInfo = new IdeaNodeInfo();
+
+        UserCoreInfo userCoreInfo = (UserCoreInfo)session.getAttribute(SessionKey.USER);
+
+        try {
+            ideaNodeInfo = ideaTreeService.deleteIdeaNodeInfo(userCoreInfo.getUserId(), nodeId);
         } catch (Exception e) {
             e.printStackTrace();
         }
