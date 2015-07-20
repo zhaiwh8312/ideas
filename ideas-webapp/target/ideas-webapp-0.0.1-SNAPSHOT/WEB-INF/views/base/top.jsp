@@ -19,22 +19,22 @@
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="<%=request.getContextPath()%>/">首页</a></li>
-                        <li><a href="#about">公共仓库</a></li>
+                        <%--<li><a href="#about">公共仓库</a></li>--%>
                         <li><a href="<%=request.getContextPath()%>/myideas/index.html">我的仓库</a></li>
-                        <li><a href="#about">关于</a></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                               aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li class="dropdown-header">Nav header</li>
-                                <li><a href="#">Separated link</a></li>
-                                <li><a href="#">One more separated link</a></li>
-                            </ul>
-                        </li>
+                        <li><a href="javascript:;" data-toggle="modal" data-target="#about_modal">关于</a></li>
+                        <%--<li class="dropdown">--%>
+                            <%--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"--%>
+                               <%--aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>--%>
+                            <%--<ul class="dropdown-menu">--%>
+                                <%--<li><a href="#">Action</a></li>--%>
+                                <%--<li><a href="#">Another action</a></li>--%>
+                                <%--<li><a href="#">Something else here</a></li>--%>
+                                <%--<li role="separator" class="divider"></li>--%>
+                                <%--<li class="dropdown-header">Nav header</li>--%>
+                                <%--<li><a href="#">Separated link</a></li>--%>
+                                <%--<li><a href="#">One more separated link</a></li>--%>
+                            <%--</ul>--%>
+                        <%--</li>--%>
                     </ul>
                     <c:choose>
                         <c:when test="${null != sessionScope.user}">
@@ -43,12 +43,12 @@
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                        aria-haspopup="true" aria-expanded="false">${sessionScope.user.email} <span class="caret"></span></a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="#">Action</a></li>
-                                        <li><a href="#">Another action</a></li>
-                                        <li><a href="#">Something else here</a></li>
-                                        <li role="separator" class="divider"></li>
-                                        <li class="dropdown-header">Nav header</li>
-                                        <li><a href="#">Separated link</a></li>
+                                        <%--<li><a href="#">Action</a></li>--%>
+                                        <%--<li><a href="#">Another action</a></li>--%>
+                                        <%--<li><a href="#">Something else here</a></li>--%>
+                                        <%--<li role="separator" class="divider"></li>--%>
+                                        <%--<li class="dropdown-header">Nav header</li>--%>
+                                        <%--<li><a href="#">Separated link</a></li>--%>
                                         <li><a href="<%=request.getContextPath()%>/user/logout.do">注销</a></li>
                                     </ul>
                                 </li>
@@ -65,3 +65,17 @@
             </div>
         </nav>
         <!-- top 菜单 end -->
+
+        <div id="about_modal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">About</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>made by zhaiwenhao</p>
+                    </div>
+                </div>
+            </div>
+        </div>

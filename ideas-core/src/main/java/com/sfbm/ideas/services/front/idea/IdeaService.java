@@ -10,9 +10,13 @@ import java.util.List;
  */
 public interface IdeaService {
 
-    public IdeaInfo getIdeaInfo(long ideaId) throws Exception;
+    public IdeaInfo getIdeaInfo(long userId, long ideaId) throws Exception;
 
     public IdeaInfo saveIdeaInfo(long userId, String ideaName, String ideaPicUrl, boolean isPublic) throws Exception;
+
+    public IdeaInfo modifyIdeaInfo(long userId, long ideaId, String ideaName, boolean isPublic) throws Exception;
+
+    public IdeaInfo removeIdeaInfo(long userId, long ideaId) throws Exception;
 
     public List<IdeaInfo> getPublicIdeaInfoList(int offset, int limit) throws Exception;
 

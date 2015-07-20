@@ -99,17 +99,20 @@
                         <div class="modal-body">
                             <input type="hidden" id="input_del_node_id"/>
                             <div class="row">
+                                <div class="col-xs-12">
                                 您确定要删除此节点吗？一旦删除，其所有的子节点都将一起删除！
+                                </div>
                             </div>
+                            <p></p>
                             <div class="row">
                                 <div class="col-xs-6">
                                     <button class="btn btn-primary btn-block" type="button" onclick="doDelete()">
-                                        <i class="fa fa-save"></i>&nbsp;&nbsp;确 定
+                                        <i class="fa fa-check"></i>&nbsp;&nbsp;确 定
                                     </button>
                                 </div>
                                 <div class="col-xs-6">
                                     <button class="btn btn-default btn-block" type="button" onclick="doCancel()">
-                                        <i class="fa fa-reply"></i>&nbsp;&nbsp;取 消
+                                        <i class="fa fa-ban"></i>&nbsp;&nbsp;取 消
                                     </button>
                                 </div>
                             </div>
@@ -539,22 +542,24 @@
         }
 
         function doDeleteInit(nodeId) {
-            $("input_del_node_id").val(nodeId);
+            $("#input_del_node_id").val(nodeId);
             $("#modal_confirm_del_node").modal({backdrop: "static", show: true});
         }
 
         function doCancel() {
-            $("input_del_node_id").val("");
+            $("#input_del_node_id").val("");
             $("#modal_confirm_del_node").modal("hide");
         }
 
         function doDelete() {
-            var nodeId = $("input_del_node_id").val();
+            var nodeId = $("#input_del_node_id").val();
 
             $.ajax({
-                url: "<%=request.getContextPath() %>/idea_node/delete/"+nodeId+".json",  //这里是网址
+                url: "<%=request.getContextPath() %>/idea_node/delete.json",  //这里是网址
                 type: "POST",
-                data:{},
+                data:{
+                    nodeId : nodeId
+                },
                 dataType: "json",
                 async: true,
                 success:function(data){

@@ -218,7 +218,7 @@
                         }
                         str += '<h2 class="text-primary">'+idea.ideaName+'</h2>';
                         str += '<p class="text-primary">公开</p>';
-                        str += '<p>共50个节点</p>';
+//                        str += '<p>共50个节点</p>';
                         str += '</div>';
                     }
 

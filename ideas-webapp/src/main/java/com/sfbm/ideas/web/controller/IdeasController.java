@@ -24,7 +24,7 @@ public class IdeasController {
     private IdeaService ideaService;
 
     @RequestMapping(value="/idea/add.json", method = RequestMethod.POST)
-    public @ResponseBody long doAddIdea(HttpSession session, @RequestParam(required = true) String ideaName, String ideaPicUrl, boolean isPublic) {
+    public @ResponseBody long doAddIdea(HttpSession session, @RequestParam(required = true) String ideaName, String ideaPicUrl, @RequestParam(required = true) boolean isPublic) {
         UserCoreInfo userCoreInfo = null;
 
         if (null != session.getAttribute(SessionKey.USER)) {
@@ -57,6 +57,64 @@ public class IdeasController {
         }
 
         return ideaInfoList;
+    }
+
+    @RequestMapping(value="/idea/info/{ideaId}.json", method = RequestMethod.POST)
+    public @ResponseBody IdeaInfo doGetIdeaInfo(HttpSession session, @PathVariable long ideaId) {
+        UserCoreInfo userCoreInfo = null;
+
+        if (null != session.getAttribute(SessionKey.USER)) {
+            userCoreInfo = (UserCoreInfo)session.getAttribute(SessionKey.USER);
+        }
+
+        IdeaInfo ideaInfo = null;
+
+        try {
+            ideaInfo = ideaService.getIdeaInfo(userCoreInfo.getUserId(), ideaId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return ideaInfo;
+    }
+
+
+    @RequestMapping(value="/idea/update.json", method = RequestMethod.POST)
+    public @ResponseBody IdeaInfo doUpdateIdea(HttpSession session, @RequestParam(required = true) long ideaId, @RequestParam(required = true) String ideaName, @RequestParam(required = true) boolean isPublic) {
+        UserCoreInfo userCoreInfo = null;
+
+        if (null != session.getAttribute(SessionKey.USER)) {
+            userCoreInfo = (UserCoreInfo)session.getAttribute(SessionKey.USER);
+        }
+
+        IdeaInfo ideaInfo = null;
+
+        try {
+            ideaInfo = ideaService.modifyIdeaInfo(userCoreInfo.getUserId(), ideaId, ideaName, isPublic);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return ideaInfo;
+    }
+
+    @RequestMapping(value="/idea/delete.json", method = RequestMethod.POST)
+    public @ResponseBody IdeaInfo doDeleteIdea(HttpSession session, @RequestParam(required = true) long ideaId) {
+        UserCoreInfo userCoreInfo = null;
+
+        if (null != session.getAttribute(SessionKey.USER)) {
+            userCoreInfo = (UserCoreInfo)session.getAttribute(SessionKey.USER);
+        }
+
+        IdeaInfo ideaInfo = null;
+
+        try {
+            ideaInfo = ideaService.removeIdeaInfo(userCoreInfo.getUserId(), ideaId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return ideaInfo;
     }
 
 }

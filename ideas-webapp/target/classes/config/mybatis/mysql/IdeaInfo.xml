@@ -58,6 +58,7 @@
             status
         FROM idea_info
         WHERE user_id = #{value}
+        AND status = '1'
     </select>
 
     <select id="queryIdeaInfoList" resultMap="ideaInfo">
@@ -70,6 +71,7 @@
             create_time,
             status
         FROM idea_info
+        WHERE status = '1'
     </select>
 
     <select id="queryIdeaInfoListIsPublic" resultMap="ideaInfo">
@@ -83,6 +85,7 @@
             status
         FROM idea_info
         WHERE is_public = 1
+        AND status = '1'
     </select>
 
 </mapper>

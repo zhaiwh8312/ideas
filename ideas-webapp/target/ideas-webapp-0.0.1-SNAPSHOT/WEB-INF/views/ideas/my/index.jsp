@@ -73,15 +73,15 @@
                                 </c:otherwise>
                             </c:choose>
 
-                            <p>共50个节点</p>
+                            <%--<p>共50个节点</p>--%>
 
                             <p>
                                 <div class="row">
                                     <div class="btn-group" role="group">
-                                        <button type="button" class="btn btn-info" title="编辑">
+                                        <button type="button" class="btn btn-info" title="编辑" onclick="doUpdateInit(${ideaInfo.ideaId})">
                                             <i class="fa fa-pencil"></i>
                                         </button>
-                                        <button type="button" class="btn btn-danger" title="删除">
+                                        <button type="button" class="btn btn-danger" title="删除" onclick="doDeleteInit(${ideaInfo.ideaId})">
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     </div>
@@ -121,7 +121,35 @@
         </div>
         <!--/row-->
 
-        <div id="modal_add_idea" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+        <div id="modal_confirm_del_idea" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <input type="hidden" id="input_del_idea_id" name="input_del_idea_id"/>
+                        <div class="row">
+                            <div class="col-xs-12">
+                            您确定要删除这个idea吗？
+                            </div>
+                        </div>
+                        <p></p>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <button class="btn btn-primary btn-block" type="button" onclick="doDelete()">
+                                    <i class="fa fa-check"></i>&nbsp;&nbsp;确 定
+                                </button>
+                            </div>
+                            <div class="col-xs-6">
+                                <button class="btn btn-default btn-block" type="button" onclick="doCancel()">
+                                    <i class="fa fa-ban"></i>&nbsp;&nbsp;取 消
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal_operat_idea" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
             <div class="modal-dialog modal-sm">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -130,6 +158,7 @@
                     </div>
                     <div class="modal-body">
                         <form id="addForm" class="form-signup">
+                            <input type="hidden" id="input_idea_id" name="input_idea_id" />
                             <div class="form-group">
                                 <label for="input_idea_name">标题</label>
                                 <input type="text" class="form-control" id="input_idea_name" name="ideaName" placeholder="标题" required/>
@@ -139,16 +168,13 @@
                             </div>
                             <div class="form-group">
                                 <div class="row">
+                                    <div class="col-xs-3"></div>
                                     <div class="col-xs-6">
-                                        <button class="btn btn-success btn-block" type="button" onclick="doAddIdea()">
+                                        <button class="btn btn-success btn-block" type="button" onclick="doOperate()">
                                             <i class="fa fa-save"></i>&nbsp;&nbsp;确 定
                                         </button>
                                     </div>
-                                    <div class="col-xs-6">
-                                        <button class="btn btn-warning btn-block" type="button" onclick="doRest()">
-                                            <i class="fa fa-reply"></i>&nbsp;&nbsp;重 置
-                                        </button>
-                                    </div>
+                                    <div class="col-xs-3"></div>
                                 </div>
                             </div>
                         </form>
@@ -188,13 +214,17 @@
         function doAddInit() {
             $("#addForm")[0].reset();
 
-            $("#modal_add_idea").modal({backdrop: "static", show: true});
+            $("#gridSystemModalLabel").html("创建我的idea");
+
+            $("#modal_operat_idea").modal({backdrop: "static", show: true});
         }
 
         function doAddIdea() {
             if (!$("#addForm").valid()) {
                 return;
             }
+
+            $("#input_idea_id").val("");
 
             $.ajax({
                 url: "<%=request.getContextPath() %>/idea/add.json",  //这里是网址
@@ -208,12 +238,103 @@
                 async: false,
                 success:function(data){
                     if (data == -1) {
-//                        $(".modal-content").html("注册成功！");
-//
-//                        $("#modal_msg").modal("show");
+                        // 新增失败
                     } else {
                         // 新增成功
                         window.location.href = "<%=request.getContextPath()%>/idea/"+data+".html";
+                    }
+                },
+                timeout:30000,
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                }
+            });
+        }
+
+        function doUpdateInit(ideaId) {
+            $("#gridSystemModalLabel").html("修改我的idea");
+
+            $.ajax({
+                url: "<%=request.getContextPath() %>/idea/info/"+ideaId+".json",  //这里是网址
+                type: "POST",
+                data:{
+                },
+                dataType: "json",
+                async: false,
+                success:function(data){
+                    if (data == null) {
+                        // 获取失败
+                    } else {
+                        $("#input_idea_id").val(data.ideaId);
+                        $("#input_idea_name").val(data.ideaName);
+
+                        $("[name='isPublic']").bootstrapSwitch("state", data.isPublic);
+
+                        $("#modal_operat_idea").modal({backdrop: "static", show: true});
+                    }
+                },
+                timeout:30000,
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                }
+            });
+        }
+
+        function doUpdate() {
+            $.ajax({
+                url: "<%=request.getContextPath() %>/idea/update.json",  //这里是网址
+                type: "POST",
+                data:{
+                    ideaId : $("#input_idea_id").val(),
+                    ideaName : $("#input_idea_name").val(),
+                    isPublic : $("[name='isPublic']").bootstrapSwitch('state')
+                },
+                dataType: "json",
+                async: false,
+                success:function(data){
+                    if (data == null) {
+                        // 更新失败
+                    } else {
+                        // 更新成功
+                        window.location.reload();
+                    }
+                },
+                timeout:30000,
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                }
+            });
+        }
+
+        function doOperate() {
+            if ($("#gridSystemModalLabel").html() == "创建我的idea") {
+                doAddIdea();
+            } else {
+                doUpdate();
+            }
+        }
+
+        function doDeleteInit(ideaId) {
+            $("#input_del_idea_id").val(ideaId);
+            $("#modal_confirm_del_idea").modal({backdrop: "static", show: true});
+        }
+
+        function doCancel() {
+            $("#input_del_idea_id").val("");
+            $("#modal_confirm_del_idea").modal("hide");
+        }
+
+        function doDelete() {
+            var ideaId = $("#input_del_idea_id").val();
+
+            $.ajax({
+                url: "<%=request.getContextPath() %>/idea/delete.json",  //这里是网址
+                type: "POST",
+                data:{
+                    ideaId : ideaId
+                },
+                dataType: "json",
+                async: false,
+                success:function(data){
+                    if (data != null) {
+                        window.location.reload();
                     }
                 },
                 timeout:30000,

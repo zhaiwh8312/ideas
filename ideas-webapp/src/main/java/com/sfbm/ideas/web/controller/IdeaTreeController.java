@@ -32,15 +32,11 @@ public class IdeaTreeController {
         ModelAndView mav = new ModelAndView();
 
         try {
-            IdeaInfo ideaInfo = ideaService.getIdeaInfo(ideaId);
-
             UserCoreInfo userCoreInfo = (UserCoreInfo)session.getAttribute(SessionKey.USER);
 
+            IdeaInfo ideaInfo = ideaService.getIdeaInfo(userCoreInfo.getUserId(), ideaId);
+
             if (null == ideaInfo) {
-                mav.setViewName("redirect:/index.html");
-            } else if (!ideaInfo.getIsPublic() && null == userCoreInfo) {
-                mav.setViewName("redirect:/index.html");
-            } else if (!ideaInfo.getIsPublic() && userCoreInfo.getUserId() != ideaInfo.getUserId()) {
                 mav.setViewName("redirect:/index.html");
             } else {
                 List<IdeaNodeInfo> nodeInfoList = ideaTreeService.getIdeaTreeByIdeaId(ideaId);
@@ -98,8 +94,8 @@ public class IdeaTreeController {
         return ideaNodeInfo;
     }
 
-    @RequestMapping(value="/idea_node/delete/{nodeId}.json", method = RequestMethod.POST)
-    public @ResponseBody IdeaNodeInfo doDeleteNode(HttpSession session, @PathVariable long nodeId) {
+    @RequestMapping(value="/idea_node/delete.json", method = RequestMethod.POST)
+    public @ResponseBody IdeaNodeInfo doDeleteNode(HttpSession session, @RequestParam(required = true) long nodeId) {
         IdeaNodeInfo ideaNodeInfo = new IdeaNodeInfo();
 
         UserCoreInfo userCoreInfo = (UserCoreInfo)session.getAttribute(SessionKey.USER);

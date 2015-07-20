@@ -21,8 +21,22 @@ public class IdeaServiceImpl implements IdeaService {
     private IdeaInfoDAO ideaInfoDAO;
 
     @Override
-    public IdeaInfo getIdeaInfo(long ideaId) throws Exception {
-        return ideaInfoDAO.queryIdeaInfoByIdeaId(ideaId);
+    public IdeaInfo getIdeaInfo(long userId, long ideaId) throws Exception {
+        if (userId <= 0) {
+            return null;
+        }
+
+        IdeaInfo ideaInfo = ideaInfoDAO.queryIdeaInfoByIdeaId(ideaId);
+
+        if (ideaInfo.getIsPublic() == false && ideaInfo.getUserId() != userId) {
+            ideaInfo = null;
+        }
+
+        if (ideaInfo.getStatus().equalsIgnoreCase(IdeaStatus.DELETE.getName())) {
+            ideaInfo = null;
+        }
+
+        return ideaInfo;
     }
 
     @Override
@@ -40,6 +54,45 @@ public class IdeaServiceImpl implements IdeaService {
         ideaInfo.setStatus(IdeaStatus.NORMAL.getName());
 
         ideaInfoDAO.insertIdeaInfo(ideaInfo);
+
+        return ideaInfo;
+    }
+
+    @Override
+    public IdeaInfo modifyIdeaInfo(long userId, long ideaId, String ideaName, boolean isPublic) throws Exception {
+        if (userId <= 0) {
+            return null;
+        }
+
+        IdeaInfo ideaInfo = ideaInfoDAO.queryIdeaInfoByIdeaId(ideaId);
+
+        if (ideaInfo.getUserId() != userId) {
+            return null;
+        }
+
+        ideaInfo.setIdeaName(ideaName);
+        ideaInfo.setIsPublic(isPublic);
+
+        ideaInfoDAO.updateIdeaInfo(ideaInfo);
+
+        return ideaInfo;
+    }
+
+    @Override
+    public IdeaInfo removeIdeaInfo(long userId, long ideaId) throws Exception {
+        if (userId <= 0) {
+            return null;
+        }
+
+        IdeaInfo ideaInfo = ideaInfoDAO.queryIdeaInfoByIdeaId(ideaId);
+
+        if (ideaInfo.getUserId() != userId) {
+            return null;
+        }
+
+        ideaInfo.setStatus(IdeaStatus.DELETE.getName());
+
+        ideaInfoDAO.updateIdeaInfo(ideaInfo);
 
         return ideaInfo;
     }
