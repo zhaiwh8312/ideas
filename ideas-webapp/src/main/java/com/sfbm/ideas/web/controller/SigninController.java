@@ -1,8 +1,7 @@
 package com.sfbm.ideas.web.controller;
 
 import com.sfbm.ideas.services.common.UserCoreInfo;
-import com.sfbm.ideas.services.constant.SessionKey;
-import com.sfbm.ideas.services.front.user.UserCheckUniqueService;
+import com.sfbm.ideas.core.constant.SessionKey;
 import com.sfbm.ideas.services.front.user.UserSigninService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;

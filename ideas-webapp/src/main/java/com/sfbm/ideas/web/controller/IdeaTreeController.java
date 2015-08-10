@@ -3,7 +3,7 @@ package com.sfbm.ideas.web.controller;
 import com.sfbm.ideas.services.common.IdeaInfo;
 import com.sfbm.ideas.services.common.IdeaNodeInfo;
 import com.sfbm.ideas.services.common.UserCoreInfo;
-import com.sfbm.ideas.services.constant.SessionKey;
+import com.sfbm.ideas.core.constant.SessionKey;
 import com.sfbm.ideas.services.front.idea.IdeaService;
 import com.sfbm.ideas.services.front.idea.IdeaTreeService;
 import org.springframework.context.annotation.Scope;
@@ -34,7 +34,13 @@ public class IdeaTreeController {
         try {
             UserCoreInfo userCoreInfo = (UserCoreInfo)session.getAttribute(SessionKey.USER);
 
-            IdeaInfo ideaInfo = ideaService.getIdeaInfo(userCoreInfo.getUserId(), ideaId);
+            long userId = 0;
+
+            if (null != userCoreInfo) {
+                userId = userCoreInfo.getUserId();
+            }
+
+            IdeaInfo ideaInfo = ideaService.getIdeaInfo(userId, ideaId);
 
             if (null == ideaInfo) {
                 mav.setViewName("redirect:/index.html");

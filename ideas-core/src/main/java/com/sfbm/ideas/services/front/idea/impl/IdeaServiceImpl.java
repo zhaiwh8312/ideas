@@ -1,14 +1,13 @@
 package com.sfbm.ideas.services.front.idea.impl;
 
 import com.sfbm.ideas.services.common.IdeaInfo;
-import com.sfbm.ideas.services.constant.IdeaStatus;
+import com.sfbm.ideas.core.constant.IdeaStatus;
 import com.sfbm.ideas.services.front.idea.IdeaService;
-import com.sfbm.ideas.services.front.idea.dao.IdeaInfoDAO;
+import com.sfbm.ideas.services.dao.IdeaInfoDAO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,10 +21,6 @@ public class IdeaServiceImpl implements IdeaService {
 
     @Override
     public IdeaInfo getIdeaInfo(long userId, long ideaId) throws Exception {
-        if (userId <= 0) {
-            return null;
-        }
-
         IdeaInfo ideaInfo = ideaInfoDAO.queryIdeaInfoByIdeaId(ideaId);
 
         if (ideaInfo.getIsPublic() == false && ideaInfo.getUserId() != userId) {

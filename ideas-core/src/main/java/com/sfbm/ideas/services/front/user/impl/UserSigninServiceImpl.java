@@ -4,7 +4,7 @@ import com.sfbm.ideas.core.util.Encryption;
 import com.sfbm.ideas.core.util.MD5;
 import com.sfbm.ideas.services.common.UserCoreInfo;
 import com.sfbm.ideas.services.front.user.UserSigninService;
-import com.sfbm.ideas.services.front.user.dao.UserCoreInfoDAO;
+import com.sfbm.ideas.services.dao.UserCoreInfoDAO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

@@ -2,11 +2,11 @@ package com.sfbm.ideas.services.front.idea.impl;
 
 import com.sfbm.ideas.services.common.IdeaInfo;
 import com.sfbm.ideas.services.common.IdeaNodeInfo;
-import com.sfbm.ideas.services.constant.NodeStatus;
-import com.sfbm.ideas.services.constant.TreeRootID;
+import com.sfbm.ideas.core.constant.NodeStatus;
+import com.sfbm.ideas.core.constant.TreeRootID;
 import com.sfbm.ideas.services.front.idea.IdeaTreeService;
-import com.sfbm.ideas.services.front.idea.dao.IdeaInfoDAO;
-import com.sfbm.ideas.services.front.idea.dao.IdeaNodeInfoDAO;
+import com.sfbm.ideas.services.dao.IdeaInfoDAO;
+import com.sfbm.ideas.services.dao.IdeaNodeInfoDAO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

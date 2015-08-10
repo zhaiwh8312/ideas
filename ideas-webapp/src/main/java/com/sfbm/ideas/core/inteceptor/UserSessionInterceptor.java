@@ -1,8 +1,8 @@
 package com.sfbm.ideas.core.inteceptor;
 
 import com.sfbm.ideas.services.common.UserCoreInfo;
-import com.sfbm.ideas.services.constant.SessionKey;
-import com.sfbm.ideas.services.constant.URLSuffix;
+import com.sfbm.ideas.core.constant.SessionKey;
+import com.sfbm.ideas.core.constant.URLSuffix;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 

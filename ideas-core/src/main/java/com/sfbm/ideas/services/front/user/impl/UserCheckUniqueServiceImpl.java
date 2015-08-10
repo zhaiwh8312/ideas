@@ -1,7 +1,7 @@
 package com.sfbm.ideas.services.front.user.impl;
 
 import com.sfbm.ideas.services.front.user.UserCheckUniqueService;
-import com.sfbm.ideas.services.front.user.dao.UserCoreInfoDAO;
+import com.sfbm.ideas.services.dao.UserCoreInfoDAO;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

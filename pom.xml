@@ -63,6 +63,9 @@
         <json-lib.version>2.4</json-lib.version>
         <json.version>20141113</json.version>
         <jackson.version>2.5.4</jackson.version>
+
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
     </properties>
 
     <dependencyManagement>

@@ -40,7 +40,7 @@
                 border-color: red;
             }
             .btn-group > .btn.active {
-                border:1px solid white;
+                border:1px solid red;
             }
         </style>
     </head>
@@ -571,6 +571,10 @@
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                 }
             });
+        }
+
+        function doEditNodeInit(nodeId) {
+            alert("还在施工中");
         }
 
     </script>
