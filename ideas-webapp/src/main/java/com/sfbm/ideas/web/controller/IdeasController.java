@@ -18,7 +18,7 @@ import java.util.List;
  * Created by zhaiwenhao on 2015/07/13.
  */
 @Controller
-@Scope("prototype")
+@Scope("request")
 public class IdeasController {
     @Resource
     private IdeaService ideaService;

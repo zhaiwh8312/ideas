@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
  * Created by zhaiwenhao on 2015/07/10.
  */
 @Controller
-@Scope("prototype")
+@Scope("request")
 public class SigninController {
     @Resource
     private UserSigninService userSigninService;

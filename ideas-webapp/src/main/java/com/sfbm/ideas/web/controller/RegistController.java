@@ -17,7 +17,7 @@ import javax.annotation.Resource;
  * Created by zhaiwenhao on 2015/07/10.
  */
 @Controller
-@Scope("prototype")
+@Scope("request")
 public class RegistController {
     @Resource
     private UserCheckUniqueService userCheckUniqueService;

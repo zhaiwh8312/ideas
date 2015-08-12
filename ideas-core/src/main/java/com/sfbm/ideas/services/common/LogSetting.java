@@ -9,6 +9,7 @@ import java.io.Serializable;
 public class LogSetting implements Serializable {
     private long logId;
     private String tableName;
+    private String businessName;
     private String primaryKey;
     private String urlTemplate;
     private long createUser;
@@ -31,6 +32,14 @@ public class LogSetting implements Serializable {
 
     public void setTableName(String tableName) {
         this.tableName = tableName;
+    }
+
+    public String getBusinessName() {
+        return businessName;
+    }
+
+    public void setBusinessName(String businessName) {
+        this.businessName = businessName;
     }
 
     public String getPrimaryKey() {

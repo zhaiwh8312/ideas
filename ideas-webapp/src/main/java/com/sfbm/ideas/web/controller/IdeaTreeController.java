@@ -20,7 +20,7 @@ import java.util.List;
  * Created by zhaiwenhao on 2015/07/14.
  */
 @Controller
-@Scope("prototype")
+@Scope("request")
 public class IdeaTreeController {
     @Resource
     private IdeaService ideaService;

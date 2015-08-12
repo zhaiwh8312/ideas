@@ -34,6 +34,10 @@
 		<typeAlias type="com.sfbm.ideas.services.common.UserCoreInfo" alias="userCoreInfo" />
 		<typeAlias type="com.sfbm.ideas.services.common.IdeaInfo" alias="ideaInfo" />
 		<typeAlias type="com.sfbm.ideas.services.common.IdeaNodeInfo" alias="ideaNodeInfo" />
+
+		<typeAlias type="com.sfbm.ideas.services.common.LogSetting" alias="logSetting" />
+		<typeAlias type="com.sfbm.ideas.services.common.LogSettingDetail" alias="logSettingDetail" />
+		<typeAlias type="com.sfbm.ideas.services.common.LogOperation" alias="logOperation" />
 	</typeAliases>
 
 	<!-- 分页插件 利用拦截器实现 -->
@@ -49,5 +53,6 @@
 		<mapper resource="config/mybatis/mysql/UserCoreInfo.xml" />
 		<mapper resource="config/mybatis/mysql/IdeaInfo.xml" />
 		<mapper resource="config/mybatis/mysql/IdeaNodeInfo.xml" />
+		<mapper resource="config/mybatis/mysql/LogSetting.xml" />
 	</mappers>
 </configuration>

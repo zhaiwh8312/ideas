@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="LogSetting">
+    <resultMap id="logSetting" type="com.sfbm.ideas.services.common.LogSetting">
+        <result property="logId" column="log_id" />
+        <result property="tableName" column="table_name" />
+        <result property="businessName" column="business_name" />
+        <result property="primaryKey" column="primary_key" />
+        <result property="urlTemplate" column="url_template" />
+        <result property="createUser" column="create_user" />
+        <result property="createTime" column="create_time" />
+        <result property="deleteScriptTemplate" column="delete_script_template" />
+        <result property="updateScriptTemplate" column="update_script_template" />
+        <result property="insertScriptTemplate" column="insert_script_template" />
+    </resultMap>
+
+    <select id="queryLogSettingByLogId" parameterType="long" resultMap="logSetting">
+        SELECT
+            log_id,
+            table_name,
+            primary_key,
+            url_template,
+            create_user,
+            DATE_FORMAT(create_time, '%Y-%m-%d %H:%i:%s') AS create_time,
+            delete_script_template,
+            update_script_template,
+            insert_script_template
+        FROM log_setting
+        WHERE log_id = #{value}
+    </select>
+
+    <select id="queryLogSettingList" parameterType="map" resultMap="logSetting">
+        SELECT
+            log_id,
+            table_name,
+            primary_key,
+            url_template,
+            create_user,
+            DATE_FORMAT(create_time, '%Y-%m-%d %H:%i:%s') AS create_time,
+            delete_script_template,
+            update_script_template,
+            insert_script_template
+        FROM log_setting
+        <where>
+            <if test="null != tableName and '' != tableName">
+                AND table_name = #{tableName}
+            </if>
+            <if test="null != businessName and '' != businessName">
+                AND business_name = #{businessName}
+            </if>
+        </where>
+    </select>
+
+</mapper>
